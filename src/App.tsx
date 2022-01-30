@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-
 import { SideBar } from './components/SideBar';
 import { Content } from './components/Content';
 
 import { api } from './services/api';
+
+import { useMemo, useCallback, useState, useEffect } from 'react';
 
 import './styles/global.scss';
 
@@ -41,7 +41,7 @@ export function App() {
     });
   }, []);
 
-  useEffect(() => {
+  useMemo(() => {
     api.get<MovieProps[]>(`movies/?Genre_id=${selectedGenreId}`).then(response => {
       setMovies(response.data);
     });
@@ -51,9 +51,9 @@ export function App() {
     })
   }, [selectedGenreId]);
 
-  function handleClickButton(id: number) {
+  const handleClickButton = useCallback((id: number) => {
     setSelectedGenreId(id);
-  }
+  }, [])
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row' }}>
